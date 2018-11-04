@@ -21,8 +21,8 @@ import pandas
 inputpath='C:\\Users\\user_PC\\Desktop\\rurusd2\\USDRUB_TOM_2018_07_10pure.csv'
 historyOutPath="C:\\Users\\user_PC\\Desktop\\rurusd2\\"
 ###############################################################################
-normal_trends = "normal_trends_crossed2"
-broken_trends = "broken_trends_crossed2"
+normal_trends = "normal_trends_crossed"
+broken_trends = "broken_trends_crossed"
 ################################################################################
 trendspath="C:\\Users\\user_PC\\Desktop\\rurusd2\\normal_trends2.csv"
 colnames = ['<price_eba>']
@@ -147,23 +147,62 @@ for i in counter_list:
     b_coeff_2 = i[3]
     relaxed_end_dot = relax_coeff*(end_dot_2 - start_dot_2) + end_dot_2
     zazor = find_zazor(price(end_dot_2), stage)
-    peakgrad2 = 2.5*zazor
+    peakgrad = 2.5*zazor
     proboy = 2*zazor
     last_touching_list = []
     for ii in x_list[end_dot_2: relaxed_end_dot]:
-        if direction == 1 and price(ii) - (ii*angle_2 + b_coeff_2) > proboy:
-            last_touching_list.append(ii)
-            break
-        if direction == 2 and (ii*angle_2 + b_coeff_2) - price(ii) > proboy:
-            last_touching_list.append(ii)
-            break
-    if len(last_touching_list) == 1:
+        
+        if direction == 1 :
+            if abs(price(ii) - (ii*angle_2 + b_coeff_2)) <= zazor:
+                last_touching_list.append(ii)
+            if price(ii) - (ii*angle_2 + b_coeff_2) > proboy:
+#                xplot2 = x_list[end_dot_2:relaxed_end_dot]
+#                yplot2 = y_list[end_dot_2:relaxed_end_dot] 
+#                xx2 = x_list[end_dot_2:relaxed_end_dot]
+#                boarder_x12 = [last_touching_list[-1], last_touching_list[-1] +1]
+#                boarder_y12 = [max(yplot2), min(yplot2)]
+#                line2 = []
+#                for ii in xx2:
+#                    line2.append(angle_2*ii + b_coeff_2)
+#                lines = plt.plot(xplot2, yplot2, xx2, line2, boarder_x12, boarder_y12)
+#                l1, l2, l3 = lines
+#                plt.setp(lines, linestyle='-')
+#                plt.setp(l1, linewidth=1, color='b')
+#                plt.setp(l2, linewidth=1, color='r')
+#                plt.setp(l3, linewidth=1, color='g')
+#                plt.grid()
+#                plt.show()
+#                plt.pause(0.05)
+                break
+        if direction == 2 :
+            if abs(price(ii) - (ii*angle_2 + b_coeff_2)) <= zazor:
+                last_touching_list.append(ii)
+            if (ii*angle_2 + b_coeff_2) - price(ii) > proboy:
+#                xplot2 = x_list[end_dot_2:relaxed_end_dot]
+#                yplot2 = y_list[end_dot_2:relaxed_end_dot] 
+#                xx2 = x_list[end_dot_2:relaxed_end_dot]
+#                boarder_x12 = [last_touching_list[-1], last_touching_list[-1] +1]
+#                boarder_y12 = [max(yplot2), min(yplot2)]
+#                line2 = []
+#                for ii in xx2:
+#                    line2.append(angle_2*ii + b_coeff_2)
+#                lines = plt.plot(xplot2, yplot2, xx2, line2, boarder_x12, boarder_y12)
+#                l1, l2, l3 = lines
+#                plt.setp(lines, linestyle='-')
+#                plt.setp(l1, linewidth=1, color='b')
+#                plt.setp(l2, linewidth=1, color='r')
+#                plt.setp(l3, linewidth=1, color='g')
+#                plt.grid()
+#                plt.show()
+#                plt.pause(0.05)
+                break
+    if len(last_touching_list) > 1:# если только 1 касание (<<1%случаев) картинка кривая
         end_dot_3 =  last_touching_list[-1]
+        print(end_dot_3)
 ########################################################################
         y_list_whole_part = y_list[start_dot_2 : end_dot_3]
         x_list_whole_part = x_list[start_dot_2: end_dot_3]
         _max, _min = peakdetect(y_list_whole_part,x_list_whole_part, wind, peakgrad)
-        
         max_listx= [x[0] for x in _max] 
         min_listx= [x[0] for x in _min]
         list_of_lists_max_3andmore_kasanie = [] #список абсцисс непробитых трендов
@@ -179,6 +218,7 @@ for i in counter_list:
             ordinata_list_max = np.array(np_double_couple_max['f1'], dtype = float) # список значений ординаты
             A = np.vander(abscissa_list_max, 2)
             coeff_max, sse_max, rank_max , sing_a_max = np.linalg.lstsq(A,ordinata_list_max, rcond=-1)
+            coeff_max = [angle_2, b_coeff_2]
         #       coeff = [a,b] где coeff[0] - это тангенс угла наклона, а coeff[1] - +b 
             list_kasanie_max = [] # временный список значений абсцыссы, в которых касательная касается графика в 3 и более точках
             list_kasanie_max_broken = []
@@ -226,6 +266,7 @@ for i in counter_list:
             real_distance_min_list.append(math.hypot(i[-1] - i[0], ii[-1] - ii[0]))
             A = np.vander(i, 2)
             coeff_min, sse_min, rank_min , sing_a_min = np.linalg.lstsq(A, ii, rcond=-1)
+            coeff_min = [angle_2, b_coeff_2]
             list_angle_min.append(coeff_min)
             list_sse_min.append(sse_min)
             amount_of_peaks_on_line = len(i)
@@ -332,6 +373,7 @@ for i in counter_list:
             real_distance_min_list_broken.append(math.hypot(i[-1] - i[0], ii[-1] - ii[0]))
             A = np.vander(i, 2)
             coeff_min, sse_min, rank_min , sing_a_min = np.linalg.lstsq(A, ii, rcond=-1)
+            coeff_min = [angle_2, b_coeff_2]
             list_angle_min_broken.append(coeff_min)
             list_sse_min_broken.append(sse_min)
             amount_of_peaks_on_line = len(i)
@@ -489,6 +531,7 @@ for i in counter_list:
             ordinata_list_min = np.array(np_double_couple_min['f1'], dtype = float) # список значений ординаты
             A = np.vander(abscissa_list_min, 2)
             coeff_min, sse_min, rank_min , sing_a_min = np.linalg.lstsq(A,ordinata_list_min, rcond=-1)
+            coeff_min = [angle_2, b_coeff_2]
     #       coeff = [a,b] где coeff[0] - это тангенс угла наклона, а coeff[1] - +b 
             list_kasanie_min = [] # временный список значений абсцыссы, в которых касательная касается графика в 3 и более точках
             list_kasanie_min_broken = []
@@ -537,6 +580,7 @@ for i in counter_list:
             real_distance_max_list.append(math.hypot(i[-1] - i[0], ii[-1] - ii[0]))
             A = np.vander(i, 2)
             coeff_max, sse_max, rank_max , sing_a_max = np.linalg.lstsq(A, ii, rcond=-1)
+            coeff_max = [angle_2, b_coeff_2]
             list_angle_max.append(coeff_max)
             list_sse_max.append(sse_max)
             amount_of_peaks_on_line = len(i)
@@ -644,6 +688,7 @@ for i in counter_list:
             real_distance_max_list_broken.append(math.hypot(i[-1] - i[0], ii[-1] - ii[0]))
             A = np.vander(i, 2)
             coeff_max, sse_max, rank_max , sing_a_max = np.linalg.lstsq(A, ii, rcond=-1)
+            coeff_max = [angle_2, b_coeff_2]
             list_angle_max_broken.append(coeff_max)
             list_sse_max_broken.append(sse_max)
             amount_of_peaks_on_line = len(i)
@@ -814,7 +859,6 @@ for i in counter_list:
                 lb = min_list_abscissa[the_best_min_index_value][-1]
                 the_best_min_index_value = the_best_min_index[0]
                 final_list_lower.append([fb, lb, the_best_min, list_angle_min[the_best_min_index_value], importance_min_val[the_best_min_index_value],  tops_min_parameters[the_best_min_index_value], len(tops_min_parameters[the_best_min_index_value][0]), peak_min_parameters[the_best_min_index_value], len(peak_min_parameters[the_best_min_index_value][0])])
-                print(the_best_min)
                 ##################################################################
                 win = lb - fb
                 past_window = lb -int(win/2)
@@ -841,6 +885,25 @@ for i in counter_list:
 #                    plt.setp(l4, linewidth=1, color='y')
                 plt.show()
                 plt.pause(0.05)
+                ########
+                xplot2 = x_list[end_dot_2:relaxed_end_dot]
+                yplot2 = y_list[end_dot_2:relaxed_end_dot] 
+                xx2 = x_list[end_dot_2:relaxed_end_dot]
+                boarder_x12 = [last_touching_list[-1], last_touching_list[-1] +1]
+                boarder_y12 = [max(yplot2), min(yplot2)]
+                line2 = []
+                for ii in xx2:
+                    line2.append(angle_2*ii + b_coeff_2)
+                lines = plt.plot(xplot2, yplot2, xx2, line2, boarder_x12, boarder_y12)
+                l1, l2, l3 = lines
+                plt.setp(lines, linestyle='-')
+                plt.setp(l1, linewidth=1, color='b')
+                plt.setp(l2, linewidth=1, color='r')
+                plt.setp(l3, linewidth=1, color='g')
+                plt.grid()
+                plt.show()
+                plt.pause(0.05)
+
                 ###################################################################
                 historyfile = open(historyOutPath + output_normal, 'a',newline='')
                 csv.writer(historyfile).writerow([2, final_list_lower])
@@ -857,7 +920,6 @@ for i in counter_list:
                 la = max_list_abscissa[the_best_max_index_value][-1]
                 the_best_max_index_value = the_best_max_index[0]
                 final_list_upper.append([fa, la, the_best_max, list_angle_max[the_best_max_index_value], importance_max_val[the_best_max_index_value],  tops_max_parameters[the_best_max_index_value], len(tops_max_parameters[the_best_max_index_value][0]), peak_max_parameters[the_best_max_index_value], len(peak_max_parameters[the_best_max_index_value][0])])
-                print(the_best_max)
                 #################################################################
                 win = la - fa
                 past_window = la -int(win/2)
@@ -881,6 +943,24 @@ for i in counter_list:
                 plt.setp(l2, linewidth=1, color='r')
                 plt.setp(l3, linewidth=1, color='g')
 #                    plt.setp(l4, linewidth=1, color='y')
+                plt.show()
+                plt.pause(0.05)
+                ########
+                xplot2 = x_list[end_dot_2:relaxed_end_dot]
+                yplot2 = y_list[end_dot_2:relaxed_end_dot] 
+                xx2 = x_list[end_dot_2:relaxed_end_dot]
+                boarder_x12 = [last_touching_list[-1], last_touching_list[-1] +1]
+                boarder_y12 = [max(yplot2), min(yplot2)]
+                line2 = []
+                for ii in xx2:
+                    line2.append(angle_2*ii + b_coeff_2)
+                lines = plt.plot(xplot2, yplot2, xx2, line2, boarder_x12, boarder_y12)
+                l1, l2, l3 = lines
+                plt.setp(lines, linestyle='-')
+                plt.setp(l1, linewidth=1, color='b')
+                plt.setp(l2, linewidth=1, color='r')
+                plt.setp(l3, linewidth=1, color='g')
+                plt.grid()
                 plt.show()
                 plt.pause(0.05)
                 ###################################################################
@@ -910,32 +990,31 @@ for i in counter_list:
                 lb_broken = min_list_abscissa_broken[the_best_min_index_value_broken][-1]
                 the_best_min_index_value_broken = the_best_min_index_broken[0]
                 final_list_lower_broken.append([fb_broken, lb_broken, the_best_min_broken, list_angle_min_broken[the_best_min_index_value_broken], importance_min_val_broken[the_best_min_index_value_broken],  tops_min_parameters_broken[the_best_min_index_value_broken], len(tops_min_parameters_broken[the_best_min_index_value_broken][0]), peak_min_parameters_broken[the_best_min_index_value_broken], len(peak_min_parameters_broken[the_best_min_index_value_broken][0]), persentage_of_brokeness_min[the_best_min_index_value_broken]])
-                print(the_best_min_broken)
                 #################################################################
-                win = lb_broken - fb_broken
-                past_window = lb_broken -int(win/2)
-                future_window = lb_broken +int(win/10)
-                xplot = x_list[(past_window):(future_window)]
-                yplot = y_list[(past_window):(future_window)] 
-                xx = x_list[(past_window) : (future_window)]
-                boarder_x1 = [lb_broken, lb_broken +1]
-                boarder_y1 = [max(yplot), min(yplot)]
-                boarder_x2 = [fb_broken, fb_broken +1]
-                boarder_y2 = boarder_y1
-                line = []
-                angle = list_angle_min_broken[the_best_min_index_value_broken][0]
-                b_coeff = list_angle_min_broken[the_best_min_index_value_broken][1]
-                for ii in xx:
-                    line.append(angle*ii + b_coeff)
-                lines = plt.plot(xplot, yplot, xx, line, boarder_x1, boarder_y1)
-                l1, l2, l3 = lines
-                plt.setp(lines, linestyle='-')
-                plt.setp(l1, linewidth=1, color='b')
-                plt.setp(l2, linewidth=1, color='r')
-                plt.setp(l3, linewidth=1, color='g')
-#                    plt.setp(l4, linewidth=1, color='y')
-                plt.show()
-                plt.pause(0.05)
+#                win = lb_broken - fb_broken
+#                past_window = lb_broken -int(win/2)
+#                future_window = lb_broken +int(win/10)
+#                xplot = x_list[(past_window):(future_window)]
+#                yplot = y_list[(past_window):(future_window)] 
+#                xx = x_list[(past_window) : (future_window)]
+#                boarder_x1 = [lb_broken, lb_broken +1]
+#                boarder_y1 = [max(yplot), min(yplot)]
+#                boarder_x2 = [fb_broken, fb_broken +1]
+#                boarder_y2 = boarder_y1
+#                line = []
+#                angle = list_angle_min_broken[the_best_min_index_value_broken][0]
+#                b_coeff = list_angle_min_broken[the_best_min_index_value_broken][1]
+#                for ii in xx:
+#                    line.append(angle*ii + b_coeff)
+#                lines = plt.plot(xplot, yplot, xx, line, boarder_x1, boarder_y1)
+#                l1, l2, l3 = lines
+#                plt.setp(lines, linestyle='-')
+#                plt.setp(l1, linewidth=1, color='b')
+#                plt.setp(l2, linewidth=1, color='r')
+#                plt.setp(l3, linewidth=1, color='g')
+##                    plt.setp(l4, linewidth=1, color='y')
+#                plt.show()
+#                plt.pause(0.05)
                 ###################################################################
                 historyfile = open(historyOutPath + output_broken, 'a',newline='')
                 csv.writer(historyfile).writerow([2, final_list_lower_broken])
@@ -952,32 +1031,31 @@ for i in counter_list:
                 la_broken = max_list_abscissa_broken[the_best_max_index_value_broken][-1]
                 the_best_max_index_value_broken = the_best_max_index_broken[0]
                 final_list_upper_broken.append([fa_broken, la_broken, the_best_max_broken, list_angle_max_broken[the_best_max_index_value_broken], importance_max_val_broken[the_best_max_index_value_broken],  tops_max_parameters_broken[the_best_max_index_value_broken], len(tops_max_parameters_broken[the_best_max_index_value_broken][0]), peak_max_parameters_broken[the_best_max_index_value_broken], len(peak_max_parameters_broken[the_best_max_index_value_broken][0]),  persentage_of_brokeness_max[the_best_max_index_value_broken]])
-                print(the_best_max_broken)
                 #################################################################
-                win = la_broken - fa_broken
-                past_window = la_broken -int(win/2)
-                future_window = la_broken +int(win/10)
-                xplot = x_list[(past_window):(future_window)]
-                yplot = y_list[(past_window):(future_window)] 
-                xx = x_list[(past_window) : (future_window)]
-                boarder_x1 = [la_broken, la_broken +1]
-                boarder_y1 = [max(yplot), min(yplot)]
-                boarder_x2 = [fa_broken, fa_broken +1]
-                boarder_y2 = boarder_y1
-                line = []
-                angle = list_angle_max_broken[the_best_max_index_value_broken][0]
-                b_coeff = list_angle_max_broken[the_best_max_index_value_broken][1]
-                for ii in xx:
-                    line.append(angle*ii + b_coeff)
-                lines = plt.plot(xplot, yplot, xx, line, boarder_x1, boarder_y1)
-                l1, l2, l3 = lines
-                plt.setp(lines, linestyle='-')
-                plt.setp(l1, linewidth=1, color='b')
-                plt.setp(l2, linewidth=1, color='r')
-                plt.setp(l3, linewidth=1, color='g')
-#                    plt.setp(l4, linewidth=1, color='y')
-                plt.show()
-                plt.pause(0.05)
+#                win = la_broken - fa_broken
+#                past_window = la_broken -int(win/2)
+#                future_window = la_broken +int(win/10)
+#                xplot = x_list[(past_window):(future_window)]
+#                yplot = y_list[(past_window):(future_window)] 
+#                xx = x_list[(past_window) : (future_window)]
+#                boarder_x1 = [la_broken, la_broken +1]
+#                boarder_y1 = [max(yplot), min(yplot)]
+#                boarder_x2 = [fa_broken, fa_broken +1]
+#                boarder_y2 = boarder_y1
+#                line = []
+#                angle = list_angle_max_broken[the_best_max_index_value_broken][0]
+#                b_coeff = list_angle_max_broken[the_best_max_index_value_broken][1]
+#                for ii in xx:
+#                    line.append(angle*ii + b_coeff)
+#                lines = plt.plot(xplot, yplot, xx, line, boarder_x1, boarder_y1)
+#                l1, l2, l3 = lines
+#                plt.setp(lines, linestyle='-')
+#                plt.setp(l1, linewidth=1, color='b')
+#                plt.setp(l2, linewidth=1, color='r')
+#                plt.setp(l3, linewidth=1, color='g')
+##                    plt.setp(l4, linewidth=1, color='y')
+#                plt.show()
+#                plt.pause(0.05)
                 ###################################################################
                 historyfile = open(historyOutPath + output_broken, 'a',newline='')
                 csv.writer(historyfile).writerow([1, final_list_upper_broken])
