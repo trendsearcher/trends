@@ -146,8 +146,13 @@ for i in counter_list:
     b_coeff_2 = i[3]
     relaxed_end_dot = relax_coeff*(end_dot_2 - start_dot_2) + end_dot_2
     zazor = find_zazor(price(end_dot_2), stage)
+<<<<<<< HEAD
     peakgrad = 5*zazor
     proboy = 3*zazor
+=======
+    peakgrad = 2.5*zazor
+    proboy = 2*zazor
+>>>>>>> e86fd6b04dfe706756cad5e6b028b16d1c6b75c4
     last_touching_list = []
     breakout_list = []
     for ii in x_list[end_dot_2: relaxed_end_dot]:
