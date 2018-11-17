@@ -9,16 +9,14 @@ Created on Tue Oct 30 13:16:56 2018
 """
 import csv
 import matplotlib.pyplot as plt
-import os
 import math
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 inputpath='C:\\Users\\user_PC\\Desktop\\rurusd2\\USDRUB_TOM_2018_07_10pure.csv'
 historyOutPath="C:\\Users\\user_PC\\Desktop\\rurusd2\\"
 ###############################################################################
-normal_trends = "normal_trends_half_zazor_crossed_"
-broken_trends = "broken_trends_half_zazor_crossed_"
+normal_trends = "normal_trends_quarter_zazor_crossed_"
+broken_trends = "broken_trends_quarter_zazor_crossed_"
 ################################################################################
 trendspath="C:\\Users\\user_PC\\Desktop\\rurusd2\\normal_trends_half_zazor2.csv"
 colnames = ['<price_eba>']
@@ -82,7 +80,7 @@ def importance_of_line (number_of_dots,  length, dispersion_of_distance): # ко
 def find_zazor(pr, st):# зазор зависит от текущей цены и длины тренда (длину усредняем для каждой стадии)
     if st == 2:
 #        return (0.00005 + 0.0000732*pr)
-        return (0 + 0.0000366*pr)
+        return (0 + 0.0000183*pr)
     if st == 3:
 #        return (0.00005 + 0.000876*pr)
         return (0 + 0.000438*pr)
@@ -146,13 +144,8 @@ for i in counter_list:
     b_coeff_2 = i[3]
     relaxed_end_dot = relax_coeff*(end_dot_2 - start_dot_2) + end_dot_2
     zazor = find_zazor(price(end_dot_2), stage)
-<<<<<<< HEAD
     peakgrad = 5*zazor
     proboy = 3*zazor
-=======
-    peakgrad = 2.5*zazor
-    proboy = 2*zazor
->>>>>>> e86fd6b04dfe706756cad5e6b028b16d1c6b75c4
     last_touching_list = []
     breakout_list = []
     for ii in x_list[end_dot_2: relaxed_end_dot]:
@@ -206,7 +199,7 @@ for i in counter_list:
                    list_kasanie_max.append(i)
                    list_kasanie_max_broken.append(i)
             list_kasanie_max.append(end_dot_3)       
-            list_kasanie_max_broken.append(end_dot_3)       
+            list_kasanie_max_broken.append(end_dot_3)  
             if  (list_kasanie_max[-1] - list_kasanie_max[0]) > Lmin and len(list_kasanie_max) > 4: #тренд захватывает последнюю точку и длиннее минимума
                 list_of_lists_max_3andmore_kasanie.append(list_kasanie_max)
                 if list_kasanie_max_broken != list_kasanie_max and (dots_under_line_max/dots_above_line_max) > deep_of_trend_brokiness:
@@ -284,6 +277,7 @@ for i in counter_list:
                         list_of_tops_H.insert(0, local_top_H)
                     if l == amount_of_peaks_on_line - 2:
                         x_of_last_top = k + (k - j)
+                        local_top_y = min(y_list[j:breakout])
                         local_top = (x_of_last_top, local_top_y)
                         list_tops.append(local_top)
                         list_of_tops_W.append((k-j))
@@ -519,7 +513,7 @@ for i in counter_list:
                     list_kasanie_min.append(i)
                     list_kasanie_min_broken.append(i)
             list_kasanie_min.append(end_dot_3)       
-            list_kasanie_min_broken.append(end_dot_3)          
+            list_kasanie_min_broken.append(end_dot_3)  
             if (list_kasanie_min[-1] - list_kasanie_min[0]) > Lmin and len(list_kasanie_min) > 4: #тренд захватывает последнюю точку и длиннее минимума
                 list_of_lists_min_3andmore_kasanie.append(list_kasanie_min)
                 if list_kasanie_min_broken != list_kasanie_min and (dots_under_line_min/dots_above_line_min) > deep_of_trend_brokiness:
@@ -598,6 +592,7 @@ for i in counter_list:
                         list_of_tops_H.insert(0, local_top_H)
                     if l == amount_of_peaks_on_line - 2:
                         x_of_last_top = k + (k - j)
+                        local_top_y = max(y_list[j:breakout])
                         local_top = (x_of_last_top, local_top_y)
                         list_tops.append(local_top)
                         list_of_tops_W.append((k-j))
