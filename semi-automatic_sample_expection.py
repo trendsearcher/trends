@@ -65,7 +65,7 @@ for i in range(20):
                 my_list.remove(my_list[i + 1]) 
 max_counter = len(my_list)
 print(max_counter)
-i = 0
+i = 21
 GOD_LIST = []
 while i <= max_counter:
     first_dot = my_list[i][0]
@@ -87,42 +87,7 @@ while i <= max_counter:
     else:
         past_window = first_dot - int((last_dot - first_dot)/2)
         past_window2 = st_top[0] - 1000#st_top[0] - int((last_dot - st_top[0])*pic2scale)
-    fig1, ax1 = plt.subplots()
-    ax1.minorticks_on()
-    ax1.grid(which='major', linestyle='-', linewidth='0.5', color='black')
-    ax1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')    
-    xplot1 = x_list[(past_window):(future_window)]
-    yplot1 = y_list[(past_window):(future_window)] 
-    xx1 = x_list[(past_window) : (future_window)]
-    boarder_x11 = [last_dot, last_dot +1]
-    boarder_y11 = [max(yplot1), min(yplot1)]
-    boarder_x21 = [first_dot, first_dot +1]
-    boarder_y21 = [max(yplot1), min(yplot1)]
-    sl_line_x1 = [st_top[0], xplot1[-1]]
-    sl_line_y1 = [st_top[1], st_top[1]]
-    sl_line_x12 = [st_top2[0], xplot1[-1]]
-    sl_line_y12 = [st_top2[1], st_top2[1]]
-    line1 = []
-    for ii in xx1:
-        valu = angle*ii + b_coeff
-        if valu <= boarder_y21[0] and valu >= boarder_y21[1]:
-            line1.append(angle*ii + b_coeff)
-        if valu < boarder_y21[1]:
-            line1.append(boarder_y21[1])
-        if valu > boarder_y21[0]:
-            line1.append(boarder_y21[0])
-    lines = plt.plot(xplot1, yplot1, xx1, line1, boarder_x11, boarder_y11, boarder_x21, boarder_y21, sl_line_x1, sl_line_y1, sl_line_x12, sl_line_y12)
-    l1, l2, l3, l4, l5, l6 = lines
-    plt.setp(lines, linestyle='-')
-    plt.setp(l1, linewidth=1, color='b')
-    plt.setp(l2, linewidth=1, color='r')
-    plt.setp(l3, linewidth=1, color='g')
-    plt.setp(l4, linewidth=1, color='y')
-    plt.setp(l5, linewidth=1, color='b')
-    plt.setp(l5, linewidth=1, color='g')
-    plt.grid()
-    plt.show()
-    plt.pause(0.05)
+    
     # если я полностью охарактеризовал пример, то посмотрим, все ли там окей
     if len(my_marks_list) == 8:
         risk1 = my_marks_list[2] /1000
@@ -131,7 +96,6 @@ while i <= max_counter:
         tp1 = my_marks_list[3]/1000
         tp2 = my_marks_list[4]/1000
         tp3 = my_marks_list[7]/1000
-        
         fig1, ax1 = plt.subplots()
         ax1.minorticks_on()
         ax1.grid(which='major', linestyle='-', linewidth='0.5', color='black')
@@ -181,6 +145,43 @@ while i <= max_counter:
         plt.grid()
         plt.show()
         plt.pause(0.05)
+    else:
+        fig1, ax1 = plt.subplots()
+        ax1.minorticks_on()
+        ax1.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+        ax1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')    
+        xplot1 = x_list[(past_window):(future_window)]
+        yplot1 = y_list[(past_window):(future_window)] 
+        xx1 = x_list[(past_window) : (future_window)]
+        boarder_x11 = [last_dot, last_dot +1]
+        boarder_y11 = [max(yplot1), min(yplot1)]
+        boarder_x21 = [first_dot, first_dot +1]
+        boarder_y21 = [max(yplot1), min(yplot1)]
+        sl_line_x1 = [st_top[0], xplot1[-1]]
+        sl_line_y1 = [st_top[1], st_top[1]]
+        sl_line_x12 = [st_top2[0], xplot1[-1]]
+        sl_line_y12 = [st_top2[1], st_top2[1]]
+        line1 = []
+        for ii in xx1:
+            valu = angle*ii + b_coeff
+            if valu <= boarder_y21[0] and valu >= boarder_y21[1]:
+                line1.append(angle*ii + b_coeff)
+            if valu < boarder_y21[1]:
+                line1.append(boarder_y21[1])
+            if valu > boarder_y21[0]:
+                line1.append(boarder_y21[0])
+        lines = plt.plot(xplot1, yplot1, xx1, line1, boarder_x11, boarder_y11, boarder_x21, boarder_y21, sl_line_x1, sl_line_y1, sl_line_x12, sl_line_y12)
+        l1, l2, l3, l4, l5, l6 = lines
+        plt.setp(lines, linestyle='-')
+        plt.setp(l1, linewidth=1, color='b')
+        plt.setp(l2, linewidth=1, color='r')
+        plt.setp(l3, linewidth=1, color='g')
+        plt.setp(l4, linewidth=1, color='y')
+        plt.setp(l5, linewidth=1, color='b')
+        plt.setp(l5, linewidth=1, color='g')
+        plt.grid()
+        plt.show()
+        plt.pause(0.05)    
     #######рассмотрим пересечение подробнее###################
     try:
         fig, ax = plt.subplots()
@@ -218,19 +219,55 @@ while i <= max_counter:
         print('SOME SHIT IS HERE')
         print('go on')
     print(st_top[1])
-    print(my_marks)
+    print(my_marks_list)
+    fig1, ax1 = plt.subplots()
+    ax1.minorticks_on()
+    ax1.grid(which='major', linestyle='-', linewidth='0.5', color='black')
+    ax1.grid(which='minor', linestyle=':', linewidth='0.5', color='black')    
+    xplot1 = x_list[(past_window):(last_dot)]
+    yplot1 = y_list[(past_window):(last_dot)] 
+    xx1 = x_list[(past_window) : (last_dot)]
+    boarder_x11 = [last_dot, last_dot +1]
+    boarder_y11 = [max(yplot1), min(yplot1)]
+    boarder_x21 = [first_dot, first_dot +1]
+    boarder_y21 = [max(yplot1), min(yplot1)]
+    sl_line_x1 = [st_top[0], xplot1[-1]]
+    sl_line_y1 = [st_top[1], st_top[1]]
+    sl_line_x12 = [st_top2[0], xplot1[-1]]
+    sl_line_y12 = [st_top2[1], st_top2[1]]
+    line1 = []
+    for ii in xx1:
+        valu = angle*ii + b_coeff
+        if valu <= boarder_y21[0] and valu >= boarder_y21[1]:
+            line1.append(angle*ii + b_coeff)
+        if valu < boarder_y21[1]:
+            line1.append(boarder_y21[1])
+        if valu > boarder_y21[0]:
+            line1.append(boarder_y21[0])
+    lines = plt.plot(xplot1, yplot1, xx1, line1, boarder_x11, boarder_y11, boarder_x21, boarder_y21, sl_line_x1, sl_line_y1, sl_line_x12, sl_line_y12)
+    l1, l2, l3, l4, l5, l6 = lines
+    plt.setp(lines, linestyle='-')
+    plt.setp(l1, linewidth=1, color='b')
+    plt.setp(l2, linewidth=1, color='r')
+    plt.setp(l3, linewidth=1, color='g')
+    plt.setp(l4, linewidth=1, color='y')
+    plt.setp(l5, linewidth=1, color='b')
+    plt.setp(l5, linewidth=1, color='g')
+    plt.grid()
+    plt.show()
+    plt.pause(0.05)    
 #    ####################################
     var0 = input(" есть ошибка - 1, все правильно - 0 ")
     if var0 == '1':
         var = input(" Nan - записываем // '--' пропускаем: ")
         if len(var) == 39:
-            value = [int(x) for x in list(var.split('.'))]
+            value = [int(x) for x in list(var.split(','))]
             marked_list = (my_list[i][-2])
             marked_list.append(value)
             GOD_LIST.append(marked_list)#
             i += 1
         elif len(var) == 3:
-            value = [int(x) for x in list(var.split('.'))]
+            value = [int(x) for x in list(var.split(','))]
             marked_list = (my_list[i][-2])
             marked_list.append(value)
             GOD_LIST.append(marked_list)#
