@@ -6,7 +6,6 @@
 2. нейронка должна иметь 2 независимые части: слои для обработки тиков и слои для обработки информации о самом тренде. [вот тут похожая история](https://datascience.stackexchange.com/questions/31388/how-to-add-non-image-features-along-side-images-as-the-input-of-cnns) 
 	*  перед выходным слоем слой тиков сузить до количества нейронов сопоставимого с выходным слоев сетки параметров пика. 
 	*  дальше обрабатывать выход слоев вместе. поэкспериментировать с архитектурой. 
-![](shit_for_ml1/NN.bmp)
 	*  keras separate layer architecture:
 https://stackoverflow.com/questions/52000071/how-to-connect-custom-keras-layer-with-multiple-outputs
 4. Выбрать обьективные метрики для оценки качества модели. 
@@ -14,3 +13,4 @@ https://stackoverflow.com/questions/52000071/how-to-connect-custom-keras-layer-w
 	*  Точно не accuracy. вероятно presision и recall. 
 	
 ![](https://s.tcdn.co/5dc/204/5dc20408-870f-37b3-ab84-bab6713230e3/1.png)
+![](shit_for_ml1/NN.bmp)
