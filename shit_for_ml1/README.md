@@ -12,5 +12,3 @@ https://stackoverflow.com/questions/52000071/how-to-connect-custom-keras-layer-w
 	*  Метрика должна быть адекватна изначальному распределению оценок трендов/пиков. В дальнейшем использовать их для кросс-валидации. 
 	*  Точно не accuracy. вероятно presision и recall. 
 	
-![](https://s.tcdn.co/5dc/204/5dc20408-870f-37b3-ab84-bab6713230e3/1.png)
-![](shit_for_ml1/NN.bmp)
