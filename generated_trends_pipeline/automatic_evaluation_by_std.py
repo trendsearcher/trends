@@ -4,6 +4,9 @@ import numpy as np
 import math
 wind_parts = 50
 
+input_trend_file = '../../sber/normal_trends_outofdublers_norm.csv'
+output_trend_file = '../../sber/normal_trends_outofdublers_norm_graded.csv'
+
  #рассчитывает зависимость квадрата стандартного отклонения Y от длины пути по оси X
 def std_dependence_upon_x (Y_set) :
     ticks_total = len(Y_set) 
@@ -30,14 +33,14 @@ def std_dependence_upon_x (Y_set) :
 def price(some): # ввел функцию цены акции от тика, индекс начинается с единицы
     return (y_column[some])    
 proportion_of_standart_deviation_list = [0]#, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-trend_data = pd.read_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends_outofdublers_norm.csv', header= 0, error_bad_lines=False)
+trend_data = pd.read_csv(, header= 0, error_bad_lines=False)
 
 cols = trend_data.columns
 type_of_line = trend_data[cols[0]]# 1 - строю сверху, 2 - строю снизу
 start = trend_data[cols[1]]
 end = trend_data[cols[2]]
 
-tick_data = pd.read_csv('C:\\Users\\user_PC\\Desktop\\sber\\SBER.csv',  sep = '\t', header = 1)
+tick_data = pd.read_csv(input_trend_file,  sep = '\t', header = 1)
 tick_cols = tick_data.columns
 y_column = tick_data[tick_cols[0]]
 y_column = list(y_column)
@@ -149,7 +152,7 @@ def normalize(df):
     return (result)
 
 trend_data = normalize(trend_data)
-trend_data.to_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends_outofdublers_norm_graded.csv', index=False)
+trend_data.to_csv(output_trend_file, index=False)
 
 
 

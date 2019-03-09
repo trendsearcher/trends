@@ -7,7 +7,10 @@ Created on Thu Feb 21 14:11:44 2019
 import pandas as pd
 import numpy as np
 import ast
-df = pd.read_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends.csv', header= 0, error_bad_lines=False)
+output_file_path = '../../trends_data/sber/normal_trends_outofdublers_norm.csv'
+input_file_path = '../../trends_data/sber/normal_trends.csv'
+
+df = pd.read_csv(input_file_path, header= 0, error_bad_lines=False)
 df=df.drop_duplicates(subset=['trend_start', 'trend_end'], keep='first')
 df = df[df["peaks_count"] < 10]
 #удаление близко стоящих трендов
@@ -129,20 +132,16 @@ df2['tops_HW_ratio_median'] = pd.Series(tops_HW_ratio_list_mean, index=df2.index
 df2['trend_lenght_high_ratio'] = pd.Series(trend_lenght_high_ratio_list, index=df2.index) 
 
 
-df2.drop(columns=['line_touching_x'], inplace=True)
-df2.drop(columns=['peaks_coordinates'], inplace=True)
-df2.drop(columns=['tops_coordinates'], inplace=True)
-df2.drop(columns=['dispersion'], inplace=True)
-df2.drop(columns=['tops_height'], inplace=True)
-df2.drop(columns=['tops_width'], inplace=True)
-df2.drop(columns=['peaks_width'], inplace=True)
-df2.drop(columns=['peaks_height'], inplace=True)
-df2.drop(columns=['peaks_HW_ratio'], inplace=True)
-df2.drop(columns=['tops_HW_ratio'], inplace=True)
-df2.drop(columns=['trend_lenght'], inplace=True)
-df2.drop(columns=['height_pic'], inplace=True)
+to_drop_list = ['line_touching_x', 'peaks_coordinates',
+                'tops_coordinates', 'dispersion',
+                'tops_height', 'tops_width',
+                'peaks_width', 'peaks_height', 
+                'peaks_HW_ratio', 'tops_HW_ratio',
+                'trend_lenght' ,'height_pic']
+
+df2.drop(columns=to_drop_list, inplace=True)
 trend_lenght
 
 print(df2.info())  
   
-df2.to_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends_outofdublers_norm.csv', index=False)    
+df2.to_csv('input_file_path', index=False)    
