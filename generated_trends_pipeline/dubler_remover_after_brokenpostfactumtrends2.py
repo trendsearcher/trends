@@ -144,4 +144,4 @@ trend_lenght
 
 print(df2.info())  
   
-df2.to_csv('input_file_path', index=False)    
+df2.to_csv(output_file_path, index=False)    
