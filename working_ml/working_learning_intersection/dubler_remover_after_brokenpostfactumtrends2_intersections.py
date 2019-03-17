@@ -7,7 +7,11 @@ Created on Thu Feb 21 14:11:44 2019
 import pandas as pd
 import numpy as np
 import ast
-df = pd.read_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends.csv', header= 0, error_bad_lines=False)
+
+input_path = '../../../trends_data/sber/normal_trends.csv'
+output_path = '../../../trends_data/sber/normal_trends_no_dublers.csv'
+
+df = pd.read_csv(input_path, header= 0, error_bad_lines=False)
 df=df.drop_duplicates(subset=['trend_start', 'trend_end'], keep='first')
 df = df[df["peaks_count"] < 10]
 df = df.sort_values(by=['trend_end'])
@@ -155,4 +159,4 @@ df2.drop(columns=['height_pic'], inplace=True)
 
 print(df2.info())  
   
-df2.to_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends_outofdublers_norm.csv', index=False)    
+df2.to_csv(output_path, index=False)    

@@ -4,6 +4,10 @@ import numpy as np
 import math
 wind_parts = 50
 
+input_file = '../../../trends_data/sber/normal_trends_no_dublers.csv'
+output_file = '../../../trends_data/sber/normal_trends_no_dublers_graded.csv'
+tick_file = '../../../trends_data/sber/pureSBER19.csv'
+
  #рассчитывает зависимость квадрата стандартного отклонения Y от длины пути по оси X
 def std_dependence_upon_x (Y_set) :
     ticks_total = len(Y_set) 
@@ -29,14 +33,14 @@ def std_dependence_upon_x (Y_set) :
     return(m)
 def price(some): # ввел функцию цены акции от тика, индекс начинается с единицы
     return (y_column[some])    
-trend_data = pd.read_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends_outofdublers_norm.csv', header= 0, error_bad_lines=False)
+trend_data = pd.read_csv(input_file, header= 0, error_bad_lines=False)
 
 cols = trend_data.columns
 type_of_line = trend_data[cols[0]]# 1 - строю сверху, 2 - строю снизу
 start = trend_data[cols[1]]
 end = trend_data[cols[2]]
 colnames = ['<TIME>', '<VOLUME>', '<PRICE>']
-tick_data = pd.read_csv('C:\\Users\\user_PC\\Desktop\\sber\\pureSBER19.csv', sep = ',', names=colnames, header = 0)
+tick_data = pd.read_csv(tick_file, sep = ',', names=colnames, header = 0)
 y_column = tick_data['<PRICE>']#y_column = data[cols[0]]
 y_column = list(y_column)
 
@@ -113,7 +117,7 @@ def normalize(df):
 trend_data = normalize(trend_data)
 trend_data.dropna(inplace=True)
 #print(trend_data.isnull().any())# проверка на наличие Nan в столбцах
-trend_data.to_csv('C:\\Users\\user_PC\\Desktop\\sber\\normal_trends_outofdublers_norm_graded.csv', index=False)
+trend_data.to_csv(output_file, index=False)
 
 
 
