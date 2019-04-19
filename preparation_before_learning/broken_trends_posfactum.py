@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Oct 30 13:16:56 2018
-
-@author: user_PC
+script №3 in order of applying
+That script takes ultrasimplefast and purifier_zipifierf_of_row_data tick data and separates
+crossed trends in near future, also every parameter of picture is calculated and the result
+is written in form of dataframe. most commented parts should be remastered in far future.
 """
 # -*- coding: utf-8 -*-
 """
@@ -12,20 +13,13 @@ import matplotlib.pyplot as plt
 import math
 import numpy as np
 import pandas as pd
-#import ast
-inputpath='C:\\Users\\user_PC\\Desktop\\rts\\pureRTS18.csv'
-historyOutPath="C:\\Users\\user_PC\\Desktop\\rts\\"
-###############################################################################
-normal_trends = "normal_trends"
-broken_trends = "broken_trends"
-################################################################################
+tick_data_path='C:\\Users\\user_PC\\Desktop\\rts\\pureRTS18.csv'
 trendspath="C:\\Users\\user_PC\\Desktop\\rts\\shit.csv"
-colnames = ['<TIME>', '<VOLUME>', '<PRICE>']#['<price_eba>']
+historyOutPath='C:\\Users\\user_PC\\Desktop\\rts\\normal_trends3.csv'
+##############################################################
+colnames = ['<TIME>', '<VOLUME>', '<PRICE>']
 ###############################################################################
-''' stage = 2, 3, 4 '''
-'''choose your fighter - длина рамки'''
 stage = 2
-'''*******************'''
 current_line_index = 0
 mydataframe = pd.DataFrame(columns=['direction', 'trend_start', 'trend_end', 'importance', 'k', 'b', 'line_touching_x','dispersion', 'trend_lenght', 'r_squared_of_trend', 'tops_coordinates','tops_height','tops_width','tops_HW_ratio','tops_count','peaks_coordinates','peaks_height','peaks_width','peaks_HW_ratio','peaks_count', 'height_pic'])
 ###############################################################################
@@ -96,14 +90,12 @@ def find_zazor(pr, st):# зазор зависит от текущей цены 
 #        return (0.00033*pr)
 ###############################################################################
 '''         header = 1  !!!    '''
-data = pd.read_csv(inputpath, sep = ',', names=colnames, header = 0)#names=colnames, sep = '\t', header = 1
+data = pd.read_csv(tick_data_path, sep = ',', names=colnames, header = 0)#names=colnames, sep = '\t', header = 1
 #    cols = data.columns
 y_column = data['<PRICE>']#y_column = data[cols[0]]
 y_list = list(y_column)
 x_list = list(range(len(y_list)))
 #################################################
-output_broken = broken_trends +'.csv'
-output_normal = normal_trends + '.csv'
 relax_coeff = 1# 100% длины в будущее до пересечения с прямой
 ticks_total = len(y_list) - 1          
 relax_coef = 1
@@ -133,7 +125,7 @@ with open (trendspath , "r") as csvfile:
             direction_of_deal = int(i[0])
             first_dot = int(i[1])
             last_dot = int(i[2])
-            if last_dot <= 13000000 and last_dot > 9242802:
+            if last_dot <= 999999999 and last_dot > 0:
                 angle = float(i[3])
                 b_coeff = float(i[4])
                 counter_list.append([first_dot, last_dot, angle, b_coeff, direction_of_deal])
@@ -1007,5 +999,5 @@ for i in counter_list:
 #                a_broken = 0  
 
 print(mydataframe.describe())
-mydataframe.to_csv('C:\\Users\\user_PC\\Desktop\\rts\\normal_trends3.csv', index=False)
+mydataframe.to_csv(historyOutPath, index=False)
 

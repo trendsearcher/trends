@@ -1,20 +1,20 @@
  # -*- coding: utf-8 -*-
 """
-Редактор Spyder
+script №1 in order of applying
 
-Это временный скриптовый файл.
+That script takes shitty data from metatrader history, delites unnecessary 
+data before opening and after closing of market. output file is a dataframe that 
+contains 3 columns: ['<TIME>', '<VOLUME>', '<PRICE>']
 """
 
-#import time
 from datetime import datetime
 import numpy as np
-from operator import itemgetter
 import pandas as pd
-
-
+input_file_name = 'C:\\Users\\user\\Desktop\\SBRF-6.16.csv'
+output_pure_file_name = 'C:\\Users\\user\\Desktop\\pureSBER616.csv'
 
 colnames = ['<DATE>',' <TIME>',' <BID>',' <ASK>',' <LAST>',' <VOLUME>']
-data = pd.read_csv('C:\\Users\\user\\Desktop\\hist\\SBRF-6.16.csv', names=colnames, sep = '\t', header = 0, skip_blank_lines=True)
+data = pd.read_csv(input_file_name, names=colnames, sep = '\t', header = 0, skip_blank_lines=True)
 data[' <BID>'].fillna(0, inplace=True)
 data[' <ASK>'].fillna(0, inplace=True)
 data[' <LAST>'].fillna(0, inplace=True)
@@ -66,7 +66,7 @@ data.drop(columns=[' <LAST>'], inplace=True)
 list_of_indexes_to_drop = list(set(out_of_session_indexes)) 
 data.drop(data.index[out_of_session_indexes], inplace = True)
 data['<PRICE>'].fillna(method = 'ffill', inplace=True)
-data.to_csv('C:\\Users\\user\\Desktop\\pureSBER616.csv', index=False) 
+data.to_csv(output_pure_file_name, index=False) 
 cols = data.columns
 print(cols)  
 print('---')
