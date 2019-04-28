@@ -8,7 +8,7 @@ minmax dots on plot are selected by hiperbolic distributed window grid
 """
 import csv
 import numpy as np
-import pandas
+import pandas as pd
 inputpath='../../trends_data/preprocess/pureSBER315.csv'
 historyOutPath='../../trends_data/preprocess/shit.csv'
 
@@ -68,36 +68,55 @@ def get_delimeters(breaker, number_of_bars, window_max_size):
 def get_grid_extremum_coordinates(y_array, window_delimiters):
     """
     takes arrays of ticks and corresponding prices, cuts a
-    window corresponding to window_delimeters boundaries.
+    window corresponding to window's_delimeters boundaries.
     Slices this 2D array according to  window_delimeters list.
 
     :return: dataframe with 2D arrays of ticks and prices
         for each grid section and section number as index
     """
-    #TODO: code
+    #TODO: check the code
+    #нарезаем на куски y согласно разделителям
+    sliced_y = [y_array[window_delimiters[i]:window_delimiters[i+1]] for i in range(len(window_delimiters)-1))]
+    #записываем координаты x соответствующие началу каждого куска
+    x_start_of_slice = window_delimiters[:-1]
+    #собираем в датафрейм
+    #TODO: column name change will break append_extremums function. Bad design
+    slice_dict = {'y_slice': sliced_y,
+                  'x_start_of_slice': x_start_of_slice}
+    sliced_window_df = pd.from_dict(slice_dict)
 
     return sliced_window_df
 
 
-def append_extremums(sliced_window_df)
+# noinspection PyUnreachableCode
+def append_extremums(sliced_window_df):
     """
-    takes sliced_window_df and calculates min and max 
+    takes sliced_window_df and calculates min and max
     coordinates for each window section
-    :param sliced_window_df: 
+    :param sliced_window_df:
     :return: df with coordinates of max and mins
     """
-    #TODO: code
+    #TODO: check the code
+    sliced_window_df['max_y'] = sliced_window_df['y_slice'].apply(np.max)
+    sliced_window_df['max_x'] = sliced_window_df['y_slice'].apply(np.argmax) + sliced_window_df['x_start_of_slice']
+    sliced_window_df['min_y'] = sliced_window_df['y_slice'].apply(np.min)
+    sliced_window_df['min_x'] = sliced_window_df['y_slice'].apply(np.argmin) + sliced_window_df['x_start_of_slice']
 
-    return sliced_window_extremums_df
+    return sliced_window_df
 
 
-def append_trend_equations(sliced_window_extremums_df):
+def append_trend_equations(sliced_window_df):
     """
     adds 4 columns with trend's equation parameters for
     mins and maxs: min_k, min_b, max_k, max_b
+
+    Equation of line connecting current extremum
+    with the last extremum of the window
+
     :param sliced_window_extremums_df:
     :return: df with 4 added columns of coefficients
     """
+
     #TODO: code
     return sliced_window_coef_df
 
@@ -134,7 +153,7 @@ def extract_memorized_list(filtered_trends_df):
     """
     extracts filtered trends coordinates to required output
     :param filtered_trends_df:
-    :return: 
+    :return:
     """
     #TODO: code
 
@@ -200,7 +219,7 @@ def func(breaker, zazor, Lmax, number_of_bars):
                 pass
             else:
                 list_kasanie_max.append(jj)
-        if len(list_kasanie_max) >= 4 and (list_kasanie_max[-1] - list_kasanie_max[0] > min_trend_len) :
+        if len(list_kasanie_max) >= 4 and (list_kasanie_max[-1] - list_kasanie_max[0] > min_trend_len):
             list_kasanie_max.append(working_max_pos)
             output_set.add((1, list_kasanie_max[0], list_kasanie_max[-1], k ,b, len(list_kasanie_max)))
 #            csv.writer(historyfile).writerow([1, list_kasanie_max[0], list_kasanie_max[-1], k ,b, var, len(list_kasanie_max)])
