@@ -87,7 +87,7 @@ def get_grid_extremum_coordinates(y_array, window_delimiters):
 
     return sliced_window_df
 
-# noinspection PyUnreachableCode
+
 def append_extremums(sliced_window_df):
     """
     takes sliced_window_df and calculates min and max
@@ -104,7 +104,7 @@ def append_extremums(sliced_window_df):
     return sliced_window_df
 
 
-def append_trend_equations(sliced_window_df):
+def append_trend_equations(df):
     """
     adds 4 columns with trend's equation parameters for
     mins and maxs: min_k, min_b, max_k, max_b
@@ -115,9 +115,18 @@ def append_trend_equations(sliced_window_df):
     :param sliced_window_extremums_df:
     :return: df with 4 added columns of coefficients
     """
+    working_max_y = df.iloc[-1]['max_y']
+    working_max_x = df.iloc[-1]['max_x']
+    working_min_y = df.iloc[-1]['min_y']
+    working_min_x = df.iloc[-1]['min_x']
+    df['max_k'] = (working_max_y - df['max_y']) / (working_max_x - df['max_x'])
+    df['max_b'] = working_max_y - df['max_k']*working_max_x
+    df['min_k'] = (working_min_y - df['min_y']) / (working_min_x - df['min_x'])
+    df['min_b'] = working_min_x - df['min_k']*working_min_x
 
     #TODO: code
-    return sliced_window_coef_df
+
+    return df
 
 
 def find_all_extremums_on_trends(sliced_window_coef_df, zazor_coeff):
