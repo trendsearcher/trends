@@ -58,7 +58,7 @@ def get_delimeters(breaker, number_of_bars, window_max_size):
 
     k = window_size/np.log(number_of_bars)
     delimiters_list = []
-    for i in range(number_of_bars+1):
+    for i in range(1,number_of_bars+1):
         window_starting_tick += int(k/i)
         delimiters_list.append(window_starting_tick)
 
@@ -76,17 +76,16 @@ def get_grid_extremum_coordinates(y_array, window_delimiters):
     """
     #TODO: check the code
     #нарезаем на куски y согласно разделителям
-    sliced_y = [y_array[window_delimiters[i]:window_delimiters[i+1]] for i in range(len(window_delimiters)-1))]
+    sliced_y = [y_array[window_delimiters[i]:window_delimiters[i+1]] for i in range(len(window_delimiters)-1)]
     #записываем координаты x соответствующие началу каждого куска
     x_start_of_slice = window_delimiters[:-1]
     #собираем в датафрейм
     #TODO: column name change will break append_extremums function. Bad design
     slice_dict = {'y_slice': sliced_y,
                   'x_start_of_slice': x_start_of_slice}
-    sliced_window_df = pd.from_dict(slice_dict)
+    sliced_window_df = pd.DataFrame.from_dict(slice_dict)
 
     return sliced_window_df
-
 
 # noinspection PyUnreachableCode
 def append_extremums(sliced_window_df):
