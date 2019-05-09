@@ -92,19 +92,19 @@ def append_extremums(sliced_window_df):
     """
     takes sliced_window_df and calculates min and max
     coordinates for each window section
-    :param sliced_window_df:
+    :param min_max_df:
     :return: df with coordinates of max and mins
     """
-    #TODO: check the code
-    sliced_window_df['max_y'] = sliced_window_df['y_slice'].apply(np.max)
-    sliced_window_df['max_x'] = sliced_window_df['y_slice'].apply(np.argmax) + sliced_window_df['x_start_of_slice']
-    sliced_window_df['min_y'] = sliced_window_df['y_slice'].apply(np.min)
-    sliced_window_df['min_x'] = sliced_window_df['y_slice'].apply(np.argmin) + sliced_window_df['x_start_of_slice']
+    min_max_df = pd.DataFrame.copy(sliced_window_df)
+    min_max_df['max_y'] = min_max_df['y_slice'].apply(np.max)
+    min_max_df['max_x'] = min_max_df['y_slice'].apply(np.argmax) + min_max_df['x_start_of_slice']
+    min_max_df['min_y'] = min_max_df['y_slice'].apply(np.min)
+    min_max_df['min_x'] = min_max_df['y_slice'].apply(np.argmin) + min_max_df['x_start_of_slice']
 
-    return sliced_window_df
+    return min_max_df
 
 
-def append_trend_equations(df):
+def append_trend_equations(min_max_df):
     """
     adds 4 columns with trend's equation parameters for
     mins and maxs: min_k, min_b, max_k, max_b
@@ -115,21 +115,22 @@ def append_trend_equations(df):
     :param sliced_window_extremums_df:
     :return: df with 4 added columns of coefficients
     """
-    working_max_y = df.iloc[-1]['max_y']
-    working_max_x = df.iloc[-1]['max_x']
-    working_min_y = df.iloc[-1]['min_y']
-    working_min_x = df.iloc[-1]['min_x']
-    df['max_k'] = (working_max_y - df['max_y']) / (working_max_x - df['max_x'])
-    df['max_b'] = working_max_y - df['max_k']*working_max_x
-    df['min_k'] = (working_min_y - df['min_y']) / (working_min_x - df['min_x'])
-    df['min_b'] = working_min_x - df['min_k']*working_min_x
+    coef_df = pd.DataFrame.copy(min_max_df)
+    working_max_y = coef_df.iloc[-1]['max_y']
+    working_max_x = coef_df.iloc[-1]['max_x']
+    working_min_y = coef_df.iloc[-1]['min_y']
+    working_min_x = coef_df.iloc[-1]['min_x']
+    coef_df['max_k'] = (working_max_y - coef_df['max_y']) / (working_max_x - coef_df['max_x'])
+    coef_df['max_b'] = working_max_y - coef_df['max_k']*working_max_x
+    coef_df['min_k'] = (working_min_y - coef_df['min_y']) / (working_min_x - coef_df['min_x'])
+    coef_df['min_b'] = working_min_x - coef_df['min_k']*working_min_x
 
     #TODO: code
 
-    return df
+    return coef_df
 
 
-def find_all_extremums_on_trends(sliced_window_coef_df, zazor_coeff):
+def find_all_extremums_on_trends(coef_df, zazor_coeff):
     """
     Founds all extremums lying in zazor_coeff distance around
         every trends. Adds a column with list of coordinates
@@ -139,7 +140,7 @@ def find_all_extremums_on_trends(sliced_window_coef_df, zazor_coeff):
     :return: df with 2 new columns with coordinates of
         extremums for min and max trends
     """
-
+    coef_df
     #TODO: code
     return sliced_window_kasanie
 
@@ -221,8 +222,10 @@ def func(breaker, zazor, Lmax, number_of_bars):
         list_kasanie_max = [] 
         # перебираем пары значений из списка максимумов
         for ii, jj in  zip(list_of_maxs[separ:-1], list_of_maxs_pos[separ:-1]): 
+            # если экстремум пробивает
             if (ii - (k * jj + b)) > zazor:
                 list_kasanie_max = []
+            # если экстремум не доходит
             elif (k * jj + b - ii) > zazor:
                 pass
             else:
