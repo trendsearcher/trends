@@ -67,9 +67,9 @@ for i in range (iterations):
     X_train, X_test, Y_train, Y_test = train_test_split(X_set, Y_set, test_size=0.2, random_state=i)
     class_weights = class_weight.compute_class_weight('balanced', np.unique(Y_train), Y_train)
     
-    model = tf.keras.models.Sequential()  # a basic feed-forward model   
-    model.add(tf.keras.layers.Dense(30, activation=tf.nn.relu))  # tanh
-    model.add(tf.keras.layers.Dense(2, activation=tf.nn.softmax))  # our output layer. 10 units for 10 classes. Softmax for probability distribution
+    model = tf.keras.models.Sequential()  
+    model.add(tf.keras.layers.Dense(30, activation=tf.nn.relu))  
+    model.add(tf.keras.layers.Dense(2, activation=tf.nn.softmax))  
     model.compile(optimizer=tf.train.AdamOptimizer(learning_rate=0.000025, beta1=0.9, beta2=0.99, epsilon=1e-08), loss='sparse_categorical_crossentropy',metrics=['accuracy'])#=tf.train.AdamOptimizer(learning_rate=0.000005, beta1=0.9, beta2=0.99, epsilon=1e-08),   # SGD(momentum=0.99, nesterov=True)
     history  = model.fit(X_train, Y_train, epochs=epochss, validation_data=(X_test, Y_test),class_weight=class_weights, callbacks=[roc_callback(training_data=(X_train, Y_train),validation_data=(X_test, Y_test))])#, class_weight=class_weights
     for indx, (i, j, k) in enumerate(zip(history.history['val_acc'], history.history['loss'], history.history['val_loss'])):
