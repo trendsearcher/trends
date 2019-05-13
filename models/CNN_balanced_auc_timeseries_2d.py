@@ -2,7 +2,7 @@
 """
 optimization of CNN stucture in up/down binary clasification task
 """
-import tensorflow as tf  # deep learning library. Tensors are just multi-dimensional arrays
+import tensorflow as tf  
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
