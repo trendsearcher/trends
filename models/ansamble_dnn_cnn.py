@@ -3,7 +3,7 @@
 checking if ansamble in epochs of max acc shows better acc than dnn and cnn separately 
 actually it works better 
 """
-import tensorflow as tf  # deep learning library. Tensors are just multi-dimensional arrays
+import tensorflow as tf  
 import numpy as np
 import pandas as pd
 import random
@@ -102,9 +102,9 @@ for i in range (iterations):
     AVERAGE_ACC_list1 = []
     matrix1 = []
     for _ in range(10):
-        model1 = tf.keras.models.Sequential()  # a basic feed-forward model   
-        model1.add(tf.keras.layers.Dense(50, activation=tf.nn.relu))  # tanh
-        model1.add(tf.keras.layers.Dense(2, activation=tf.nn.softmax))  # our output layer. 10 units for 10 classes. Softmax for probability distribution
+        model1 = tf.keras.models.Sequential()     
+        model1.add(tf.keras.layers.Dense(50, activation=tf.nn.relu))  
+        model1.add(tf.keras.layers.Dense(2, activation=tf.nn.softmax))  
         model1.compile(optimizer=tf.train.AdamOptimizer(learning_rate=0.000025, beta1=0.9, beta2=0.99, epsilon=1e-08), loss='sparse_categorical_crossentropy',metrics=['accuracy'])#=tf.train.AdamOptimizer(learning_rate=0.000005, beta1=0.9, beta2=0.99, epsilon=1e-08),   # SGD(momentum=0.99, nesterov=True)
         history1  = model1.fit(X_train, Y_train, epochs=70, validation_data=(X_test, Y_test),class_weight=class_weights, callbacks=[roc_callback1(training_data=(X_train, Y_train),validation_data=(X_test, Y_test), pred_list = matrix1)])#, class_weight=class_weights
         AVERAGE_ACC_list1.append(history1.history['val_acc'][69])
