@@ -3,7 +3,7 @@
 just experiment. is there any synergy in 2 types of data combined in merged dnn/cnn in average?
 dispite othogonality...actually no
 """
-import tensorflow as tf  # deep learning library. Tensors are just multi-dimensional arrays
+import tensorflow as tf  
 import numpy as np
 import pandas as pd
 import tensorflow.keras.backend as K
