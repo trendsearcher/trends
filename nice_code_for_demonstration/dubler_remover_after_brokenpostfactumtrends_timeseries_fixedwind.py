@@ -29,8 +29,8 @@ forecast_win_length = 100 # расстояние между концом окн�
 past_window = 5000 # фиксированная длина истории
 ###############################################################################
 
-def spiskorazbivatel(mylist):
-    '''spiskorazbivatel([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
+def list_step_separator (mylist):
+    '''list_step_separator([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
        с шагом 5 возвращает [4, 8, 12, 16, 20]'''
     start = mylist[0]
     end = mylist[-1]
@@ -145,7 +145,7 @@ for index, row in df.iterrows():
     trend_start = trend_end - past_window
     tang = row['k']
     b = row['b']
-    a = spiskorazbivatel(list(range(trend_start,trend_end+1)))
+    a = list_step_separator(list(range(trend_start,trend_end+1)))
     
     subtraction = 0
     if direction == 1:
